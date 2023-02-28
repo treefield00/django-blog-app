@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+{% for post in object_list %}
+{% if post.is_published or user.is_authenticated %}
+
+{% if not post.is_published %}
+<span class="badge bg-danger">下書き</span>
+{% endif %}
+
+    <h2>{{post.title}}</h2>
+    <p>{{post.content|truncatechars:30}}</p>
+    <p>{{post.created_at}}{{post.updated_at}}</p>
+    <p><a href="{% url 'post-detail' post.pk %}">続きを読む＞＞</a></p>
+{% endif %}
+{% endfor %}
+
+{% endblock content %}
