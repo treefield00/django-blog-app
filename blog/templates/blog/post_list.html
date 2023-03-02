@@ -2,7 +2,12 @@
 
 {% block content %}
 
-{% for post in object_list %}
+{% if category %}
+<h1>{{category}}<i>-category-</i></h1>
+<hr>
+{% endif %}
+
+{% for post in posts %}
 {% if post.is_published or user.is_authenticated %}
 
 {% if not post.is_published %}
