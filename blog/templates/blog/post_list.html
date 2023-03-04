@@ -9,6 +9,9 @@
             {% elif tag %}
             <h1>#{{tag}}</h1>
             <hr>
+            {% elif query %}
+            <h1>"{{query}}"の検索結果 {{posts.count}}件</h1>
+            <hr>
             {% endif %}
             
             {% for post in posts %}
@@ -26,28 +29,7 @@
             {% endfor %}
         </div>
         <div class="col-3">
-            <div class="p-4 category">
-                <h4>カテゴリー</h4>
-                <ul class="list-group list-group-flush">
-                    {% for category in categories %}
-                    {% if category.count > 0 %}
-                    <li class="list-group-item">
-                        <a href="{% url 'category-post-list' category.slug %}">
-                            {{category.name}}({{category.count}})
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="p-4">
-                <h4>タグ</h4>
-                {% for tag in tags %}
-                    <a class="btn btn-light bg-light text-dark m-1" href="{% url 'tag-post-list' tag.slug %}">
-                        {{tag.name}}
-                    </a>
-                {% endfor %}
-            </div>
+            {% include "blog/snippets/sidebar.html" %}
         </div>
     </div>
 
