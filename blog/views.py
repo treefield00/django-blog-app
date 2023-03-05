@@ -69,6 +69,7 @@ class SearchPostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
+    paginate_by = 1
     
     def get_queryset(self):
         self.query = self.request.GET.get('query') or ""
@@ -83,9 +84,13 @@ class SearchPostListView(ListView):
         if not self.request.user.is_authenticated:
             queryset = queryset.filter(is_published=True)
 
+        self.post_count = len(queryset)
+
         return queryset
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['query'] = self.query
+        context['post_count'] = self.post_count
+        
         return context
