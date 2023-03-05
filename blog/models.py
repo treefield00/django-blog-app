@@ -8,6 +8,11 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "カテゴリー"
+        verbose_name_plural = "カテゴリー"
+
 
 class Tag(models.Model):
     name = models.CharField(verbose_name="タグ", max_length=255)
@@ -16,10 +21,15 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "タグ"
+        verbose_name_plural = "タグ"
+
 
 class Post(models.Model):
     title = models.CharField(verbose_name="タイトル", max_length=200)
     content = models.TextField(verbose_name="本文", )
+    image = models.ImageField(verbose_name="画像", upload_to='uploads/', null=True, blank=True)
     created_at = models.DateTimeField(verbose_name="作成日", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="更新日", auto_now=True)
     is_published = models.BooleanField(verbose_name="公開設定", default=False)
@@ -30,3 +40,7 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name = "記事"
+        verbose_name_plural = "記事"

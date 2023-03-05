@@ -20,11 +20,15 @@
             {% if not post.is_published %}
             <span class="badge bg-danger">下書き</span>
             {% endif %}
+
+            {% if post.image %}
+            <img src="{{post.image.url}}" alt="post.title" width="300" height="200">
+            {% endif %}
             
-                <h2>{{post.title}}</h2>
-                <p>{{post.content|truncatechars:30}}</p>
-                <p>{{post.created_at}}{{post.updated_at}}</p>
-                <p><a href="{% url 'post-detail' post.pk %}">続きを読む＞＞</a></p>
+            <h2>{{post.title}}</h2>
+            <p>{{post.content|truncatechars:30}}</p>
+            <p>{{post.created_at}}{{post.updated_at}}</p>
+            <p><a href="{% url 'post-detail' post.pk %}">続きを読む＞＞</a></p>
             {% endif %}
             {% endfor %}
 
