@@ -1,5 +1,8 @@
 from django.db import models
 
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
+
 # Create your models here.
 
 class Category(models.Model):
@@ -28,7 +31,8 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title = models.CharField(verbose_name="タイトル", max_length=200)
-    content = models.TextField(verbose_name="本文", )
+    # content = models.TextField(verbose_name="本文", )
+    content = MarkdownxField(verbose_name="本文")
     image = models.ImageField(verbose_name="画像", upload_to='uploads/', null=True, blank=True)
     created_at = models.DateTimeField(verbose_name="作成日", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="更新日", auto_now=True)
@@ -37,6 +41,9 @@ class Post(models.Model):
     category = models.ForeignKey(Category, verbose_name="カテゴリー" , on_delete=models.PROTECT, null=True, blank=True)
 
     tag = models.ManyToManyField(Tag, verbose_name="タグ", blank=True)
+
+    def convert_markdown_to_html(self):
+        return markdownify(self.content)
 
     def __str__(self):
         return self.title

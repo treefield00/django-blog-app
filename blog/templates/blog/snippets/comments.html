@@ -1,13 +1,22 @@
+<hr>
+
 {% for comment in post.comment_set.all %}
 <div class="comment">
     <b>{{comment.name}} {{comment.created_at}}</b>
     <p>{{comment.text}}</p>
     <a href="{% url 'reply' comment.pk %}">返信する</a>
 
+    {% if user.is_authenticated %}
+    <a href="{% url 'comment-delete' comment.pk %}">削除</a>
+    {% endif %}
+
     {% for reply in comment.reply_set.all %}
     <div class="reply">
         <b>{{reply.name}} {{reply.created_at}}</b>
         <p>{{reply.text}}</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'reply-delete' reply.pk %}">削除</a>
+        {% endif %}
     </div>
     {% endfor %}
 

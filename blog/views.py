@@ -1,7 +1,9 @@
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from blog.models import Post, Category, Tag, Comment, Reply
 from blog.forms import CommentForm, ReplyForm
@@ -137,3 +139,18 @@ class ReplyCreateView(CreateView):
         context['comment'] = get_object_or_404(Comment, pk=comment_pk)
         return context
     
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    template_name = "blog/comment_delete.html"
+    # success_url = reverse_lazy('post-detail')
+
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'pk': self.object.post.pk})
+
+class ReplyDeleteView(LoginRequiredMixin, DeleteView):
+    model = Reply
+    template_name = "blog/comment_delete.html"
+    # success_url = reverse_lazy('post-detail')
+
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'pk': self.object.comment.post.pk})
