@@ -1,24 +1,48 @@
 {% extends 'blog/base.html' %}
-
+ 
+ 
 {% block content %}
-<div class="row">
+<div class="row mb-5">
     <div class="col-9">
-        <div class="article">
-            <h2>{{post.title}}</h2>
-            <p>{{post.created_at}}{{post.updated_at}}</p>
+        <div class="col-md-11 mx-auto">
+            <div class="article-area">
+                <h1>{{post.title}}</h1>
+                <p>
+                    {% if not post.is_published %}
+                    <span class="badge bg-danger">下書き</span>
+                    {% endif %}
+                    <span class="badge bg-secondary">{{post.category}}</span>
+                    <small class="ps-1">
+                        <i class="fa-solid fa-pencil"></i>{{post.created_at|date}} |
+                        <i class="fa-solid fa-wrench"></i>{{post.updated_at|date}}
+                    </small>
+                </p>
+ 
+                {% if post.image %}
+                <img width="100%" height="450" src="{{ post.image.url }}" alt="{{ post.title }}">
+                {% endif %}
+ 
+                <div class="mt-4 mb-4">
+                    {{post.convert_markdown_to_html|safe}}
+                </div>
+ 
+                <p>
+                    {% for tag in post.tags.all %}
+                    <span class="badge bg-light text-dark">
+                        {{tag}}
+                    </span>
+                    {% endfor %}
+                </p>
+            </div>
+            {% include "blog/snippets/comments.html" %}
             <hr>
-            <p>{{post.convert_markdown_to_html|safe}}</p>
+            <a class="new-comment" href="{% url 'comment' post.pk %}">
+                <i class="fa-solid fa-comment-dots"></i>コメントする
+            </a>
         </div>
-        <!-- コメント一覧 -->
-        {% include 'blog/snippets/comments.html' %}
-        <hr>
-        <!-- コメントフォーム -->
-        <a href="{% url 'comment' post.pk %}">コメントする</a>
     </div>
     <div class="col-3">
         {% include "blog/snippets/sidebar.html" %}
     </div>
 </div>
-
-
 {% endblock content %}

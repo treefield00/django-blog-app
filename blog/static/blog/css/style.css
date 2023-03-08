@@ -1,4 +1,22 @@
-div.category > ul > li a{
+div.category > ul > li a {
     color: #212529;
     text-decoration: none;
+}
+ 
+img {
+    object-fit: cover;
+}
+ 
+.new-comment, .comment a{
+    color: #212529;
+    text-decoration: none;   
+}
+ 
+.comment-form label {
+    color: #dc143c;
+    font-weight: 600;
+}
+
+footer {
+    text-align: center;
 }

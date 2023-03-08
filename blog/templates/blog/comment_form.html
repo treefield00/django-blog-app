@@ -1,20 +1,31 @@
 {% extends 'blog/base.html' %}
-
+ 
 {% block content %}
-<div class="row">
-    <div class="col-9">
-       <h1>コメントを書き込む</h1>
-
-       <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">送信</button>
-       </form>
-    </div>
-    <div class="col-3">
-        {% include "blog/snippets/sidebar.html" %}
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+ 
+            {% if post %}
+            <h1 class="mb-4">コメント投稿フォーム</h1>
+            <h4 class="mb-3">
+                Title:{{post.title}}
+            </h4>
+            {% elif comment %}
+            <h1 class="mb-4">返信する</h1>
+            <h4 class="mb-3">
+                Re:{{comment.text}}
+            </h4>
+            {% endif %}
+ 
+            <form class="comment-form" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">送信</button>
+            </form>
+        </div>
+        <div class="col-3">
+            {% include "blog/snippets/sidebar.html" %}
+        </div>
     </div>
 </div>
-
-
-{% endblock content %}
+{% endblock %}

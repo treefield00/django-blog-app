@@ -1,45 +1,67 @@
 {% extends 'blog/base.html' %}
-
+ 
+ 
 {% block content %}
-    <div class="row">
-        <div class="col-9">
+ 
+ 
+<div class="row">
+    <div class="col-9">
+        <div class="col-md-11 mx-auto">
             {% if category %}
-            <h1>{{category}}<i>-category-</i></h1>
+            <h1>{{category}} <i>-category-</i></h1>
             <hr>
             {% elif tag %}
-            <h1>#{{tag}}</h1>
+            <h1>#{{tag}} <i>-tag-</i></h1>
             <hr>
             {% elif query %}
-            <h1>"{{query}}"の検索結果 {{post_count}}件</h1>
+            <h1>"{{query}}"の検索結果 {{ post_count }}件</h1>
             <hr>
             {% endif %}
-            
+        </div>
+ 
+        <div class="col-md-10 mx-auto">
             {% for post in posts %}
+ 
             {% if post.is_published or user.is_authenticated %}
-            
-            {% if not post.is_published %}
-            <span class="badge bg-danger">下書き</span>
-            {% endif %}
-
-            {% if post.image %}
-            <img src="{{post.image.url}}" alt="post.title" width="300" height="200">
-            {% endif %}
-            
-            <h2>{{post.title}}</h2>
-            <p>{{post.convert_markdown_to_html|striptags|truncatechars:30}}</p>
-            <p>{{post.created_at}}{{post.updated_at}}</p>
-            <p><a href="{% url 'post-detail' post.pk %}">続きを読む＞＞</a></p>
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">
+                        {% if not post.is_published %}
+                        <span class="badge bg-danger">下書き</span>
+                        <br>
+                        {% endif %}
+                        {{post.category}}
+                    </strong>
+                    <h3 class="mb-0">{{post.title}}</h3>
+                    <div class="mb-2 text-muted">{{post.updated_at|date}}</div>
+                    <p class="card-text mb-auto">{{post.convert_markdown_to_html|striptags|truncatechars:30}}</p>
+                    <a href="{% url 'post-detail' post.pk %}" class="stretched-link">続きを読む＞＞</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    {% if post.image %}
+                    <img width="300" height="250" src="{{ post.image.url }}" alt="{{ post.title }}">
+                    {% else %}
+                    <svg class="bd-placeholder-img" width="300" height="250" xmlns="http://www.w3.org/2000/svg"
+                        role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                        focusable="false">
+                        <rect width="100%" height="100%" fill="#55595c" />
+                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                    </svg>
+                    {% endif %}
+                </div>
+            </div>
+ 
             {% endif %}
             {% endfor %}
-
-            {% include 'blog/snippets/pagination.html' %}
-
-        </div>
-        <div class="col-3">
-            {% include "blog/snippets/sidebar.html" %}
+ 
+            {% include "blog/snippets/pagination.html" %}
         </div>
     </div>
-
-
-
+ 
+    <div class="col-3">
+        {% include "blog/snippets/sidebar.html" %}
+    </div>
+ 
+</div>
+ 
 {% endblock content %}
