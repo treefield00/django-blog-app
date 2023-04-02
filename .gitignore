@@ -6,3 +6,5 @@ media
 # files
 db.sqlite3
 .env
+.DS_Store
+local_settings.py
